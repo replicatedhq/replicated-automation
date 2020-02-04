@@ -1,0 +1,13 @@
+I1=austins-swimlane-1
+I2=austins-swimlane-2
+I3=austins-swimlane-3
+I4=austins-swimlane-4
+I5=austins-swimlane-5
+I6=austins-swimlane-6
+I1Z=us-west1-c
+I2Z=us-west1-b
+I3Z=us-west1-a
+I4Z=us-west1-c
+I5Z=us-west1-b
+I6Z=us-west1-a
+KUBE_CONTEXT=kubernetes-admin@kubernetes_swimlane
