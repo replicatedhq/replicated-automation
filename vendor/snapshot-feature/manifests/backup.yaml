@@ -1,0 +1,27 @@
+apiVersion: velero.io/v1
+kind: Backup
+metadata:
+  name: backup
+spec:
+  includedNamespaces:
+  - test
+  hooks:
+    resources:
+    - name: echo-hook
+      includedNamespaces:
+      - '*'
+      includedResources:
+      - 'pods'
+      labelSelector:
+        matchLabels:
+          app: example
+          component: nginx
+      pre:
+      - exec:
+          command: ["/bin/bash", "-c", "echo hello"]
+      - exec:
+          command: ["/bin/bash", "-c", "echo $(date) > /scratch/timestamp"]
+      - exec:
+          command: ["/bin/bash", "-c", "head -c 1G </dev/urandom >/scratch/data"]
+          timeout: 3m
+          onError: Continue

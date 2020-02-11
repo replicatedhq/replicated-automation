@@ -1,0 +1,23 @@
+apiversion: kurl.sh/v1beta1
+kind: Installer
+metadata:
+  name: ""
+spec:
+  contour:
+    version: latest
+  docker:
+    version: latest
+  kotsadm:
+    version: latest
+  kubernetes:
+    version: latest
+  prometheus:
+    version: latest
+  registry:
+    version: latest
+  rook:
+    version: latest
+  weave:
+    version: latest
+  velero:
+    version: latest
