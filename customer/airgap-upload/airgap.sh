@@ -2,7 +2,7 @@
 
 ## Script to upload airgap bundle from the command line. 
 
-set -ex
+set -e
 
 KOTS_PWD="$1"
 AIRGAP_FILENAME="$2"
