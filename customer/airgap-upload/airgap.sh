@@ -37,7 +37,7 @@ function usage(){
   echo "  $0 1mtwFTWE"
   echo "  $0 1mtwFTWE bundle.airgap license.yaml"
   echo "  $0 1mtwFTWE my-bundle.airgap my-license.yaml kots"
-  echo "  $0 1mtwFTWE my-bundle.airgap my-license.yaml kots reguser 38dh2wjsy registry"
+  echo "  $0 1mtwFTWE my-bundle.airgap my-license.yaml kots reguser 38dh2wjsy reguser index.docker.io"
   echo "  (Latter two examples only relevant for existing cluster installs)"
   echo ""
   exit 1
