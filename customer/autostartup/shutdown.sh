@@ -7,7 +7,7 @@ kubectl config use-context $KUBE_CONTEXT
 
 echo "Stopping Replicated"
 REPLICATED_POD_ID=$(kubectl get pod -l "app=replicated,tier=master" -o name | sed 's/pod\///')
-kubectl exec $REPLICATED_POD_ID replicatedctl app stop --force
+kubectl exec $REPLICATED_POD_ID -c replicated -- replicatedctl app stop --force
 
 echo 'Delete replicated-shared-fs-snapshotter deployment'
 kubectl delete deployments/replicated-shared-fs-snapshotter

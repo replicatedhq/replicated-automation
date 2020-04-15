@@ -34,7 +34,6 @@ echo "Ceph is Ready"
 
 echo "Starting Replicated"
 REPLICATED_POD_ID=$(kubectl get pod -l "app=replicated,tier=master" -o name | sed 's/pod\///')
-REPLICATED_APP_ID=$(kubectl exec $REPLICATED_POD_ID replicated apps | awk 'NR==2 {print $1}')
-kubectl exec $REPLICATED_POD_ID replicated app $REPLICATED_APP_ID start 
+kubectl exec $REPLICATED_POD_ID -c replicated -- replicatedctl app start 
 
 echo "Successful Startup"
