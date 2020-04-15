@@ -9,7 +9,7 @@ echo "Startup Cloud Instances"
 # Equivalent AWS commands (for each node + LB, do load balancer first): 
 #   aws ec2 start-instances --instance-ids i-07b517fd03dba9e0f
 #   aws ec2 wait instance-running --instance-ids i-07c817fd03dba9e0f
-gcloud compute instances start $LBZ --zone $ILZ & wait
+gcloud compute instances start $LBZ --zone $LB & wait
 gcloud compute instances start $I1 --zone $I1Z & gcloud compute instances start $I2 --zone $I2Z & gcloud compute instances start $I3 --zone $I3Z & gcloud compute instances start $I4 --zone $I4Z & gcloud compute instances start $I5 --zone $I5Z & gcloud compute instances start $I6 --zone $I6Z & wait
 sleep 20
 

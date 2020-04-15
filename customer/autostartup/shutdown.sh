@@ -24,6 +24,6 @@ echo "Node Shutdown"
 # * aws ec2 stop-instances --instance-ids i-07c817fd03dba9e0f
 # * aws ec2 wait instance-stopped --instance-ids i-07c817fd03dba9e0f
 gcloud compute instances stop $I1 --zone $I1Z & gcloud compute instances stop $I2 --zone $I2Z & gcloud compute instances stop $I3 --zone $I3Z & gcloud compute instances stop $I4 --zone $I4Z & gcloud compute instances stop $I5 --zone $I5Z & gcloud compute instances stop $I6 --zone $I6Z & wait
-gcloud compute instances stop $LBZ --zone $ILZ & wait
+gcloud compute instances stop $LBZ --zone $LB & wait
 
 echo "Successful Shutdown"
