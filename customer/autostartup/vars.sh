@@ -13,3 +13,4 @@ I5Z=us-west1-b
 I6Z=us-west1-a
 LBZ=us-west1-c
 KUBE_CONTEXT=kubernetes-admin@austins-instance-1
+
