@@ -7,7 +7,7 @@ kubectl config use-context $KUBE_CONTEXT
 
 echo "Stopping Replicated"
 REPLICATED_POD_ID=$(kubectl get pod -l "app=replicated,tier=master" -o name | sed 's/pod\///')
-kubectl exec $REPLICATED_POD_ID replicatedctl app stop --force
+kubectl exec $REPLICATED_POD_ID -c replicated -- replicatedctl app stop --force
 
 echo 'Delete replicated-shared-fs-snapshotter deployment'
 kubectl delete deployments/replicated-shared-fs-snapshotter
@@ -24,6 +24,6 @@ echo "Node Shutdown"
 # * aws ec2 stop-instances --instance-ids i-07c817fd03dba9e0f
 # * aws ec2 wait instance-stopped --instance-ids i-07c817fd03dba9e0f
 gcloud compute instances stop $I1 --zone $I1Z & gcloud compute instances stop $I2 --zone $I2Z & gcloud compute instances stop $I3 --zone $I3Z & gcloud compute instances stop $I4 --zone $I4Z & gcloud compute instances stop $I5 --zone $I5Z & gcloud compute instances stop $I6 --zone $I6Z & wait
-gcloud compute instances stop $LBZ --zone $I1Z & wait
+gcloud compute instances stop $LB --zone $LBZ & wait
 
 echo "Successful Shutdown"

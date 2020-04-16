@@ -9,7 +9,7 @@ echo "Startup Cloud Instances"
 # Equivalent AWS commands (for each node + LB, do load balancer first): 
 #   aws ec2 start-instances --instance-ids i-07b517fd03dba9e0f
 #   aws ec2 wait instance-running --instance-ids i-07c817fd03dba9e0f
-gcloud compute instances start $LBZ --zone $I1Z & wait
+gcloud compute instances start $LB --zone $LBZ & wait
 gcloud compute instances start $I1 --zone $I1Z & gcloud compute instances start $I2 --zone $I2Z & gcloud compute instances start $I3 --zone $I3Z & gcloud compute instances start $I4 --zone $I4Z & gcloud compute instances start $I5 --zone $I5Z & gcloud compute instances start $I6 --zone $I6Z & wait
 sleep 20
 
@@ -34,7 +34,6 @@ echo "Ceph is Ready"
 
 echo "Starting Replicated"
 REPLICATED_POD_ID=$(kubectl get pod -l "app=replicated,tier=master" -o name | sed 's/pod\///')
-REPLICATED_APP_ID=$(kubectl exec $REPLICATED_POD_ID replicated apps | awk 'NR==2 {print $1}')
-kubectl exec $REPLICATED_POD_ID replicated app $REPLICATED_APP_ID start 
+kubectl exec $REPLICATED_POD_ID -c replicated -- replicatedctl app start 
 
 echo "Successful Startup"
