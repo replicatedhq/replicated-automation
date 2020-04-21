@@ -5,9 +5,14 @@ source ./vars.sh
 echo "Connecting to Cluster"
 kubectl config use-context $KUBE_CONTEXT
 
-echo "Stopping Replicated"
+echo "Stopping Replicated Application"
 REPLICATED_POD_ID=$(kubectl get pod -l "app=replicated,tier=master" -o name | sed 's/pod\///')
 kubectl exec $REPLICATED_POD_ID -c replicated -- replicatedctl app stop --force --attach || true
+
+echo "Stopping Replicated System"
+kubectl scale deploy replicated --replicas=0
+kubectl rollout status deploy replicated
+sleep 20
 
 # Snapshotter won't exist if replicated wasn't fully started. Continue with shutdown if it doesn't exist. 
 echo 'Delete replicated-shared-fs-snapshotter deployment'
