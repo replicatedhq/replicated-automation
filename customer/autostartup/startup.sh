@@ -23,10 +23,27 @@ until (kubectl wait --for=condition=Ready node/$I6); do sleep 1; done
 kubectl wait --for=condition=Ready node/$I2 & kubectl wait --for=condition=Ready node/$I3 \
   & kubectl wait --for=condition=Ready node/$I4 & kubectl wait --for=condition=Ready node/$I5 \
   & kubectl wait --for=condition=Ready node/$I6 & wait
-sleep 20
 
-echo "Scaling Ceph"
-kubectl -n rook-ceph-system scale deploy rook-ceph-operator --replicas=1
+echo "Waiting for Kubernetes to become available for scaling Ceph"
+set +e
+SCALE_CMD="kubectl -n rook-ceph-system scale deploy rook-ceph-operator --replicas=1"
+ATTEMPTS=0
+$SCALE_CMD
+RESULT=$?
+until [ $RESULT -eq 0 ] || [ $ATTEMPTS -eq 60 ]; do
+  $SCALE_CMD
+  RESULT=$?
+  ATTEMPTS=$((ATTEMPTS + 1))
+  echo "Waiting for Kubernetes to become available for scaling Ceph ($ATTEMPTS of 60)"
+  sleep 2
+done
+
+if [ $ATTEMPTS -eq 60 ]; then
+    echo "Aborting... Unable to query Kubernetes after $ATTEMPTS attempts."
+    echo exit 1
+fi
+
+echo "Waiting for Ceph deployment to roll out"
 kubectl rollout status deployment.extensions/rook-ceph-operator --namespace rook-ceph-system
 
 echo "Waiting for Ceph to become available for querying"
@@ -41,6 +58,7 @@ until [ $RESULT -eq 0 ] || [ $ATTEMPTS -eq 60 ]; do
   echo "Waiting to query Ceph ($ATTEMPTS of 60)"
   sleep 2
 done
+set -e
 
 if [ $ATTEMPTS -eq 60 ]; then
     echo "Aborting... Unable to query ceph after $ATTEMPTS attempts."
@@ -51,10 +69,11 @@ echo "Waiting for Ceph to be Ready"
 CEPH_HEALTH=$($HEALTH_CMD)
 while [ "$CEPH_HEALTH" != "HEALTH_OK" ]
 do 
-    CEPH_HEALTH=$HEALTH_CMD)
+    CEPH_HEALTH=$($HEALTH_CMD)
     echo $CEPH_HEALTH
 done 
 echo "Ceph is Ready"
+sleep 20
 
 echo "Starting Replicated"
 REPLICATED_POD_ID=$(kubectl get pod -l "app=replicated,tier=master" -o name | sed 's/pod\///')

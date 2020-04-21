@@ -9,6 +9,7 @@ echo "Stopping Replicated"
 REPLICATED_POD_ID=$(kubectl get pod -l "app=replicated,tier=master" -o name | sed 's/pod\///')
 kubectl exec $REPLICATED_POD_ID -c replicated -- replicatedctl app stop --force --attach || true
 
+# Snapshotter won't exist if replicated wasn't fully started. Continue with shutdown if it doesn't exist. 
 echo 'Delete replicated-shared-fs-snapshotter deployment'
 kubectl delete deployments/replicated-shared-fs-snapshotter || true
 
