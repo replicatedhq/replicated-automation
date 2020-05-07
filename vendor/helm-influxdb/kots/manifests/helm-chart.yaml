@@ -1,0 +1,14 @@
+apiVersion: kots.io/v1beta1
+kind: HelmChart
+metadata:
+  name: influx
+spec:
+  chart:
+    name: influx
+    chartVersion: 4.3.2
+  values:
+    setDefaultUser:
+      enabled: true
+      user:
+        username: "repl{{ ConfigOption `admin_username`}}"
+        password: "repl{{ ConfigOption `admin_password`}}"
