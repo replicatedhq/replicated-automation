@@ -1,0 +1,7 @@
+apiVersion: kots.io/v1beta1
+kind: Application
+metadata:
+  name: influx
+spec:
+  title: Influx
+  icon: https://influxdata.github.io/branding/img/downloads/influxdata-logo--symbol--castle.png
