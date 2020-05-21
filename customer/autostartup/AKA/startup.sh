@@ -75,8 +75,13 @@ done
 echo "Ceph is Ready"
 sleep 20
 
-echo "Starting Replicated"
+echo "Starting Replicated System"
+kubectl scale deploy replicated --replicas=1
+kubectl rollout status deploy replicated
 REPLICATED_POD_ID=$(kubectl get pod -l "app=replicated,tier=master" -o name | sed 's/pod\///')
+until (kubectl exec $REPLICATED_POD_ID -c replicated -- replicatedctl system status 2>/dev/null | grep -q '"Retraced": "ready"'); do sleep 1; done 
+
+echo "Starting Replicated Application"
 kubectl exec $REPLICATED_POD_ID -c replicated -- replicatedctl app start --attach
 
 echo "Successful Startup"
