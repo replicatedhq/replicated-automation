@@ -60,10 +60,11 @@ list-releases: check-api-token check-app deps-vendor-cli
 
 .PHONY: helm-package
 helm-package: deps-vendor-cli
+	helm dependencies update ../
 	helm package ../. -d manifests/
 
 .PHONY: release
-release: check-api-token check-app deps-vendor-cli lint
+release: check-api-token check-app deps-vendor-cli helm-package lint
 	deps/replicated release create \
 		--app $(app_slug) \
 		--yaml-dir manifests \
