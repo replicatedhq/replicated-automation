@@ -55,7 +55,7 @@ until [ $RESULT -eq 0 ] || [ $ATTEMPTS -eq 60 ]; do
   $HEALTH_CMD
   RESULT=$?
   ATTEMPTS=$((ATTEMPTS + 1))
-  echo "Waiting to query Ceph ($ATTEMPTS of 60)"
+  echo "Waiting to query Ceph (Attempt $ATTEMPTS of 60)"
   sleep 2
 done
 set -e
@@ -66,12 +66,18 @@ if [ $ATTEMPTS -eq 60 ]; then
 fi
 
 echo "Waiting for Ceph to be Ready"
+ATTEMPTS=0
 CEPH_HEALTH=$($HEALTH_CMD)
-while [ "$CEPH_HEALTH" != "HEALTH_OK" ]
-do 
+until [ "$CEPH_HEALTH" != "HEALTH_OK" ] || [ $ATTEMPTS -eq 60 ]; do
     CEPH_HEALTH=$($HEALTH_CMD)
-    echo $CEPH_HEALTH
+    ATTEMPTS=$((ATTEMPTS + 1))
+    echo $CEPH_HEALTH -- "(Attempt $ATTEMPTS of 60)"
 done 
+
+if [ $ATTEMPTS -eq 60 ]; then
+    echo "Aborting... Ceph Health is not OK after $ATTEMPTS attempts."
+    echo exit 1
+fi
 echo "Ceph is Ready"
 sleep 20
 
