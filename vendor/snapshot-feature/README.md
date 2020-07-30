@@ -9,12 +9,12 @@ mv velero /usr/local/bin/velero
 sudo mv velero /usr/local/bin/velero
 ```
 
-# Installation: KOTSApp to demonstrate Snapshot capabilities
+# Installation: KOTS Application to demonstrate Snapshot capabilities
 1. Perform an installation of the KOTS application located here: https://github.com/replicatedhq/kotsapps/tree/master/postgres-snapshots. This can be accomplished by running `curl -sSL https://k8s.kurl.sh/postgres-snapshots-unstable | sudo bash`. Recommended Ubuntu 18 for the VM. 
 2. Download the license for the application here: https://raw.githubusercontent.com/replicatedhq/kotsapps/master/postgres-snapshots/License-Unstable.yaml
 3. Once this application is installed, you are able to perform snapshots to the built-in Rook/Ceph RGW storage. 
 
-# Scenario: Configure GCP as a storage provider 
+# Scenario 1: Configure GCP as a storage provider 
 0. **(Alternate Instructions -- Recommended to follow instructions by Admin Console UI first)**
 1. Setup a new GCP bucket with all necessary permissions by following the guide here: https://github.com/vmware-tanzu/velero-plugin-for-gcp. For your convenience, we have also created a script to do this for you: https://raw.githubusercontent.com/replicatedhq/replicated-automation/master/vendor/snapshot-feature/setup-gcp.sh
 2. Install the Velero with GCP plugin, using the bucket name and the secret created from the above first step
@@ -29,11 +29,11 @@ sudo mv velero /usr/local/bin/velero
 
 3. On the "Snapshot Settings" page, change provider to GCP, and provide bucket name and credentials file if needed
 
-# Scenario: Configuration to another provider has failed. Customer wishes to return to initial snapshot configuration (via Rook/Ceph RGW). 
+# Scenario 2: Configuration to another provider has failed. Customer wishes to return to initial snapshot configuration (via Rook/Ceph RGW). 
 1. Simply update the "Snapshot Settings" UI to point to the internal location. This should work. 
 2. If this fails for any reason, manual steps to do the same can be performed by referring to the following script: https://github.com/replicatedhq/replicated-automation/blob/master/vendor/snapshot-feature/setup-rook-rgw.sh
 
-# Scenario: Disaster Recovery. Old cluster is down. A new cluster has been created with kURL and we wish to restore application to this new cluster. 
+# Scenario 3: Disaster Recovery. Old cluster is down. A new cluster has been created with kURL and we wish to restore application to this new cluster. 
 0. Note: This approach will restore the application, but Admin Console will not be restored. 
 1. Create a new cluster matching the old k8s installer (you can simply copy it into the UI at kurl.sh)
 2. Run: `kubectl delete ns velero` to clear the default configuration. 
