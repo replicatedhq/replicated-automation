@@ -65,6 +65,6 @@ sudo mv velero /usr/local/bin/velero
 ```s
     kubectl get secret -o yaml aws-credentials -n velero
     kubectl get backupstoragelocations -n velero
-    velero backup download <backupname>
+    velero backup download <backupname> --details
 ```
 
