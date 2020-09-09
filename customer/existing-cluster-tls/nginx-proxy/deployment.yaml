@@ -1,0 +1,43 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: kotsadm-nginx-proxy
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: kotsadm-nginx-proxy
+  template:
+    metadata:
+      labels:
+        app: kotsadm-nginx-proxy
+    spec:
+      containers:
+      - name: kotsadm-nginx-proxy
+        image: nginx
+        ports:
+        - containerPort: 80
+        - containerPort: 443
+        volumeMounts:
+        - mountPath: /etc/nginx
+          readOnly: true
+          name: nginx-conf
+        - mountPath: /etc/nginx-tls
+          readOnly: true
+          name: nginx-tls
+        - mountPath: /var/log/nginx
+          name: log
+      volumes:
+      - name: nginx-conf
+        configMap:
+          name: kotsadm-nginx-conf
+          items:
+            - key: nginx.conf
+              path: nginx.conf
+            - key: virtualhost.conf
+              path: virtualhost/virtualhost.conf
+      - name: nginx-tls
+        secret:
+          secretName: kotsadm-nginx-tls
+      - name: log
+        emptyDir: {}
