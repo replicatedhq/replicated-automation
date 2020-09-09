@@ -1,4 +1,4 @@
-This can be used as a vagrant box for testing kURL installations. To launch it, ensure you have [vagrant and virtualbox installed](),
+This can be used as a vagrant box for testing kURL installations. To launch it, ensure you have [vagrant and virtualbox installed](https://www.vagrantup.com/docs/providers/virtualbox),
 then run:
 
 ```
