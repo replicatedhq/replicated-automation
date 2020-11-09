@@ -4,6 +4,8 @@ This repo contains automation to setup and test an application on an air-gapped 
 
 ## Setup
 
+NOTE: requires `~/.ssh/google_compute_engine`
+
 ### Clone this repo
 
 ```

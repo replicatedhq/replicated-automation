@@ -41,11 +41,25 @@ resource "google_compute_instance" "jumpbox_instance" {
   provisioner "file" {
     source      = "scripts/jumpbox_download.sh"
     destination = "/tmp/jumpbox_download.sh"
+    
+    connection {
+      type        = "ssh"
+      user        = "ubuntu"
+      private_key = "${file("~/.ssh/google_compute_engine")}"
+      host        = "jumpbox-instance" #"${var.host}"
+    }
   }
 
   provisioner "file" {
     source      = "scripts/jumpbox_upload.sh"
     destination = "/tmp/jumpbox_upload.sh"
+
+    connection {
+      type        = "ssh"
+      user        = "ubuntu"
+      private_key = "${file("~/.ssh/google_compute_engine")}"
+      host        = "jumpbox-instance" #"${var.host}"
+    } 
   }
 
   provisioner "remote-exec" {
@@ -80,18 +94,6 @@ resource "google_compute_instance" "airgap_instance" {
     network = "default"
     access_config {
     }
-  }
-
-  provisioner "file" {
-    source      = "scripts/script1.sh"
-    destination = "/tmp/script.sh"
-  }
-
-  provisioner "remote-exec" {
-    inline = [
-      "chmod +x /tmp/script.sh",
-      "/tmp/script.sh args",
-    ]
   }
 }
 
