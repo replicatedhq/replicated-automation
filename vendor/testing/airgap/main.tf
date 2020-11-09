@@ -16,7 +16,7 @@ resource "google_compute_instance" "airgap_instance" {
 
   boot_disk {
     initialize_params {
-      image = "ubuntu-os-cloud/ubuntu-1804-lts"
+      image = var.image_type
     }
   }
 
@@ -30,4 +30,8 @@ resource "google_compute_instance" "airgap_instance" {
 resource "google_compute_network" "embedded_airgap_network" {
   name                    = "embedded-airgap-network"
   auto_create_subnetworks = "true"
+}
+
+output "application" {
+  value = var.application_slug
 }
