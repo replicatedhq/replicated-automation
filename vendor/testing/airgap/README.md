@@ -1,4 +1,6 @@
-#
+# Framework for Automated Airgap Testing (FAAT)
+
+This repo contains automation to setup and test an application on an air-gapped embedded cluster. It is intended to quickly surface problems with Vendor applications before they get to the end-customer.
 
 ## Setup
 
