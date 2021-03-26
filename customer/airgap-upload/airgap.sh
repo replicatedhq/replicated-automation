@@ -102,18 +102,18 @@ THEPOD=$(kubectl get pod -l app=kotsadm-operator -o name -n ${KOTS_NAMESPACE} | 
 BASIC_AUTHSTRING=$((kubectl -n ${KOTS_NAMESPACE} exec -it $THEPOD -- bash -c 'printf user:$KOTSADM_TOKEN | base64') | sed 's/[^a-zA-Z0-9+//=]//g')
 
 # upload license
-set +H
-APP_SLUG_CURL="$(curl -k -X POST -H "Authorization: ${BEARER_TOKEN}" -H 'Content-Type: application/json' "${KOTSADM_URL}/graphql" \
-    -d "{\"operationName\":\"uploadKotsLicense\",\"variables\":{\"value\":\"${LICENSE_FILE_CONTENTS}\"},
-    \"query\":\"mutation uploadKotsLicense(\$value: String!) {  uploadKotsLicense(value: \$value) {  slug  }}\"}")"
+APP_SLUG_CURL="$(curl -k -X POST \
+    -H "Authorization: Bearer ${BEARER_TOKEN}" \
+    -H 'Content-Type: application/json' \
+    -d '{"licenseData":"'"$(echo "$LICENSE_FILE_CONTENTS" | sed 's/"/\\\"/g')"'"}' \
+    ${KOTSADM_URL}/api/v1/license)"
 APP_SLUG="$(echo -e ${APP_SLUG_CURL//\"/\\n} | awk 'NR==8 {print $1}')"
-set -H
 
 # airgap reset
 curl -k -v -X POST \
-    -H "Authorization: Kots ${BASIC_AUTHSTRING}" \
+    -H "Authorization: Bearer ${BEARER_TOKEN}" \
     -H 'Content-Type: application/json' \
-    ${KOTSADM_URL}/api/v1/airgap/reset
+    ${KOTSADM_URL}/api/v1/kots/airgap/reset/${APP_SLUG}
 
 # upload airgap bundle
 curl -k -v -X POST \
@@ -124,3 +124,14 @@ curl -k -v -X POST \
     -F "namespace=${REGISTRY_NAMESPACE}" \
     -F "username=${REGISTRY_USERNAME}" \
     -F "password=${REGISTRY_PASSWORD}"
+
+# wait for airgap bundle upload
+until curl -k -X POST \
+    -H "Authorization: Bearer ${BEARER_TOKEN}" \
+    -H 'Content-Type: application/json' \
+    ${KOTSADM_URL}/graphql \
+    -d '{"operationName":"getAirgapInstallStatus","variables":{},"query":"query getAirgapInstallStatus {\n  getAirgapInstallStatus {\n    installStatus\n    currentMessage\n  }\n}\n"}' \
+    | grep '"installStatus":"installed"'; do
+    echo "Waiting for bundle upload..."
+    sleep 5
+done
