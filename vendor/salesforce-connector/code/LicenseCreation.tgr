@@ -1,0 +1,8 @@
+trigger LicenseCreation on VW_License__c (after insert) {
+    if (Trigger.isInsert) {
+            if (Trigger.isAfter) {
+                License_Creation_Callout.licensecallout(Trigger.newMap.keySet());
+         
+            }
+    }
+}
