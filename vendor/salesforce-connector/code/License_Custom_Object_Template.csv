@@ -1,0 +1,4 @@
+Name,Airgap Enabled,App ID,Channel ID,Domain,Expires At,Geoaxis Supported,Gitops Supported,Identity Service Supported,Snapshot Support,Support Bundle Enabled,Type
+License_Name_1,TRUE,APP_ID_String,Channel_ID_String,www.domain.com,1/1/2025,TRUE,TRUE,TRUE,TRUE,TRUE,prod
+License_Name_2,FALSE,APP_ID_String,Channel_ID_String,www.domain.com,1/1/2025,FALSE,FALSE,FALSE,FALSE,FALSE,dev
+License_Name_3,FALSE,APP_ID_String,Channel_ID_String,www.domain.com,1/1/2025,FALSE,TRUE,TRUE,FALSE,FALSE,trial
