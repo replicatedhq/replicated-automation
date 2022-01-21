@@ -14,6 +14,8 @@ Go to Setup
 Click Object Manager
 Create from Spreadsheet and upload the License Template.csv
 Update Record Name field = Name
+<img width="1088" alt="Screen Shot 2022-01-21 at 2 08 51 PM" src="https://user-images.githubusercontent.com/89656176/150593544-71a58236-b4c8-4539-919d-b81a7a8ff3fe.png">
+
 
 (Optional but advised) Adjust the Type to a picklist (with values: prod, dev, trial)
 Click Next
@@ -31,6 +33,7 @@ Go to Setup
 Go to Security > Remote Site Settings
 Click “New Remote Site”
 Add the Vendor Web API site (like below)
+<img width="1078" alt="Screen Shot 2022-01-21 at 2 08 57 PM" src="https://user-images.githubusercontent.com/89656176/150593603-5547087b-21c2-4048-9506-e64c4ee4525a.png">
 
 https://www.loom.com/share/57fdca3aec9845a99562bc522fa94923
 
