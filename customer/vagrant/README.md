@@ -1,4 +1,4 @@
 ```
-vagrant plugin install vagrant-disksize
+export VAGRANT_EXPERIMENTAL="disks"
 vagrant up ubuntu18
 ```
