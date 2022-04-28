@@ -43,18 +43,8 @@ list-releases: check-api-token check-app deps-vendor-cli
 
 .PHONY: release
 release: check-api-token check-app deps-vendor-cli lint
-	replicated release create \
-		--app $(app_slug) \
-		--yaml-dir manifests \
-		--promote $(channel) \
-		--version $(version) \
-		--release-notes $(release_notes) \
-		--ensure-channel
+	replicated release create --auto -y
 
 .PHONY: release-kurl-installer
 release-kurl-installer: check-api-token check-app deps-vendor-cli
-	replicated installer create \
-		--app $(app_slug) \
-		--yaml-file kurl-installer.yaml \
-		--promote $(channel) \
-		--ensure-channel
+	replicated installer create --auto -y
