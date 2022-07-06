@@ -9,7 +9,7 @@ helm-package: deps-vendor-cli
 	helm package ../. -d manifests/
 
 .PHONY: release
-release: deps-vendor-cli
+release: deps-vendor-cli helm-package
 	replicated release create --auto -y
 
 .PHONY: release-kurl-installer
